@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.aliyun.oss:aliyun-sdk-oss:2.2.3">
+    <CLASSES>
+      <root url="jar://E:/MyDevelopTools/gradle-3.3/bin/caches/modules-2/files-2.1/com.aliyun.oss/aliyun-sdk-oss/2.2.3/42e910822925e56fb80c76fa90c0de6c5ba52360/aliyun-sdk-oss-2.2.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://E:/MyDevelopTools/gradle-3.3/bin/caches/modules-2/files-2.1/com.aliyun.oss/aliyun-sdk-oss/2.2.3/d81aa4b860da227a4fb94fd96b4f5ae7e3fd8605/aliyun-sdk-oss-2.2.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

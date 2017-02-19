@@ -1,0 +1,70 @@
+group 'com.mcin'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    // 本地相关依赖包
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+
+    // Spring相关依赖包
+    compile 'org.springframework:spring-webmvc:4.2.6.RELEASE'
+    compile 'org.springframework:spring-tx:4.2.6.RELEASE'
+    compile 'org.springframework:spring-jdbc:4.2.6.RELEASE'
+
+    // 日志相关依赖包
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'ch.qos.logback:logback-core:1.1.7'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+// https://mvnrepository.com/artifact/log4j/log4j
+    compile group: 'log4j', name: 'log4j', version: '1.2.9'
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+// https://mvnrepository.com/artifact/p6spy/p6spy
+    compile group: 'p6spy', name: 'p6spy', version: '1.3'
+
+    // JSP相关依赖包
+    compile 'javax.servlet.jsp:jsp-api:2.2.1-b03'
+    compile 'javax.servlet:servlet-api:3.0-alpha-1'
+
+    // 数据库相关依赖包
+    compile 'org.mybatis:mybatis:3.4.0'
+    compile 'org.mybatis:mybatis-spring:1.3.0'
+    compile 'mysql:mysql-connector-java:5.1.39'
+    compile 'com.alibaba:druid:1.0.20'
+
+    // JSON组件相关依赖包
+    compile 'com.alibaba:fastjson:1.2.12'
+
+    //httpclient
+    compile 'org.apache.httpcomponents:fluent-hc:4.5.2'
+
+    //阿里云oss
+    compile 'com.aliyun.oss:aliyun-sdk-oss:2.2.3'
+
+    //jstl 相关包
+// https://mvnrepository.com/artifact/javax.servlet/jstl
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+
+    // REDIS相关依赖包
+// https://mvnrepository.com/artifact/redis.clients/jedis
+    compile group: 'redis.clients', name: 'jedis', version: '2.2.1'
+// https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp
+    compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+// https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.7.1.RELEASE'
+// https://mvnrepository.com/artifact/commons-pool/commons-pool
+    compile group: 'commons-pool', name: 'commons-pool', version: '1.6'
+
+    // lombok
+    compileOnly "org.projectlombok:lombok:1.16.12"
+}
