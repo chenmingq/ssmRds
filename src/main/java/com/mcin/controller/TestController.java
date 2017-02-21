@@ -6,6 +6,7 @@ import com.mcin.util.FastJsonUtil;
 import com.mcin.util.WebUtil;
 import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -34,18 +36,23 @@ public class TestController {
 
     /**
      * 登陆测试
-     * @param json
-     * @param resp
      * @return
      */
     @RequestMapping(value="/login"/*,method = { RequestMethod.POST,RequestMethod.GET } */)
-    @ResponseBody
-    public String login(@RequestParam("json") String json, HttpServletResponse resp){
+    public String login(Model model){
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(new Date());
 
-       Map<String,Object> map = FastJsonUtil.jsonToObject(json,Map.class);
+//        @RequestParam("json" ) String json, HttpServletResponse resp
+//        Map<String,Object> map = FastJsonUtil.jsonToObject(json,Map.class);
        ResponseModel responseModel = new ResponseModel();
-       String userName = WebUtil.getParameter(map,"userName");
-       return WebUtil.responseResult(userName, responseModel);
+       String msg = "TomCat 运行中 " + time;
+        model.addAttribute("msg",msg);
+
+
+//       String userName = WebUtil.getParameter(map,"userName");
+//       return WebUtil.responseResult(userName, responseModel);
+        return "/index";
     }
 
     @RequestMapping("/name")
