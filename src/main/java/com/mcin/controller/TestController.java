@@ -55,7 +55,7 @@ public class TestController {
         return "/index";
     }
 
-    @RequestMapping("/name")
+    @RequestMapping("/names")
     @ResponseBody
     public List<String> name (String phone){
 
