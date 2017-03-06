@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop" xmlns:cache="http://www.springframework.org/schema/cache"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+    ">
+	<!-- 开启注解配置 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.mcin" />
+
+	<!--加载配置文件 -->
+	<!-- <bean id="placeholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<array>
+				<value>/WEB-INF/classes/jdbc.properties</value>
+				<value>/WEB-INF/classes/redis.properties</value>
+			</array>
+		</property>
+	</bean>
+	 -->
+	  <context:property-placeholder location="classpath:config/jdbc.properties"/>
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="${redis.pool.maxActive}" />
+		<property name="maxIdle" value="${redis.pool.maxIdle}" />
+		<property name="minIdle" value="${redis.pool.maxWait}" />
+	</bean>
+
+	<!-- redis的连接池pool，不是必选项：timeout/password -->
+	<!--<bean id="jedisPool" class="redis.clients.jedis.JedisPool">-->
+	<!--<constructor-arg index="0" ref="jedisPoolConfig" />-->
+	<!--<constructor-arg index="1" value="${redis.host}" />-->
+	<!--<constructor-arg index="2" value="${redis.port}" type="int" />-->
+	<!--<constructor-arg index="3" value="60000" type="int" />-->
+	<!--</bean>-->
+
+	<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName" value="${redis.host}"/>
+		<property name="port" value="${redis.port}"/>
+		<property name="password" value="${redis.auth}"/>
+		<property name="poolConfig" ref="jedisPoolConfig" />
+	</bean>
+
+	<!--redis begin-->
+	<!--<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
+		<!--<property name="maxIdle" value="${redis.maxIdle}" />-->
+		<!--<property name="maxTotal" value="${redis.maxTotal}" />-->
+		<!--<property name="minIdle" value="${redis.minIdle}"/>-->
+	<!--</bean>-->
+
+	<bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer" ref="stringSerializer" />
+		<property name="enableTransactionSupport" value="true" />
+	</bean>
+	<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer" ref="stringSerializer" />
+		<property name="enableTransactionSupport" value="true" />
+	</bean>
+	<!--redis end-->
+</beans>
