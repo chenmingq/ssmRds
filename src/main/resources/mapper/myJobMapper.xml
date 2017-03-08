@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcin.dao.MyJobDao">
+
+
+    <!--  注册信息  -->
+    <resultMap id="" type="" >
+
+    </resultMap>
+
+    <!-- 登录信息表 -->
+    <sql id="userLogin">user_login</sql>
+
+    <!-- 个人资料基本信息表 -->
+    <sql id="userInfo">user_info</sql>
+
+    <!-- 注册添加个人基本信息 -->
+    <sql id="insertInfo">
+        (user_id, user_name,  birthday, phone,  email, education, height, weight, apartment, native, personal_website,  major, graduation_time, school, create_ip, create_time)
+    </sql>
+
+    <!-- 注册添加个人基本信息数据 -->
+    <sql id="insertInfoData">
+        (#{userId}, #{userName},  #{birthday}, #{phone},  #{email}, #{education}, #{height} , #{weight}, #{apartment}, #{native}, #{personalWebsite},  #{major}, #{graduationTime}, #{school}, #{ip}, NOW())
+    </sql>
+
+    <!-- 查询该账号是否被注册 -->
+    <select id="selectAccountCount" parameterType="String" resultType="Integer">
+        SELECT
+           COUNT(1)
+        FROM
+           <include refid="userLogin"/>
+        WHERE
+            account = #{account}
+    </select>
+
+    <!-- 添加登录表数据 -->
+    <insert id="insertAccount" >
+        INSERT
+        INTO
+            <include refid="userLogin"/>
+            (account,password,create_time)
+        VALUES
+            (#{account},#{password},NOW())
+    </insert>
+
+    <!-- 查询该账号的主键id -->
+    <select id="selectLoginID" resultMap="" parameterType="String">
+        SELECT
+           id
+        FROM
+            <include refid="userLogin"/>
+        WHERE
+            account = #{account}
+            LIMIT 1
+    </select>
+
+    <!-- 注册个人信息 -->
+    <insert id="insertUserInfo">
+        INSERT
+        INTO
+            <include refid="insertInfo" />
+            <include refid="userInfo"/>
+        VALUES
+            <include refid="insertInfoData"/>
+    </insert>
+
+
+</mapper>

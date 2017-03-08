@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    border-image:none;
+}
+
+
+.main_login{
+    width: 100%;
+    height: auto;
+}
+
+.login_form{
+    text-align: center;
+    width: 80%;
+    height: 100px;
+    margin: 0 auto;
+}
+.login_user{
+    width: 100%;
+    height: 70px;
+}
+
+.user_input,.psd_input{
+    width: 20%;
+    height: 30px;
+    border-radius: 10px;
+}
+.login_btn,.login_psd{
+    width: 100%;
+    height: 40px;
+}

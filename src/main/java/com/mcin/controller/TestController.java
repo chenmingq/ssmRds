@@ -46,7 +46,7 @@ public class TestController {
 //        @RequestParam("json" ) String json, HttpServletResponse resp
 //        Map<String,Object> map = FastJsonUtil.jsonToObject(json,Map.class);
        ResponseModel responseModel = new ResponseModel();
-       String msg = "TomCat 运行中 " + time;
+       String msg = "<b>"+"TomCat 运行中 " +"<b></br>" + time;
         model.addAttribute("msg",msg);
 
 
