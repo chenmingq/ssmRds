@@ -731,7 +731,7 @@ public class ToUtil {
             // Instantiate a message
             Message msg = new MimeMessage(session);
             //Set message attributes
-            msg.setFrom(new InternetAddress(SendEmail.FROM));
+            msg.setFrom(new InternetAddress(SendEmail.EMAIL_FROM));
             InternetAddress[] address = {new InternetAddress(toEmail)};
             msg.setRecipients(Message.RecipientType.TO, address);
             msg.setSubject("账号激活邮件");
