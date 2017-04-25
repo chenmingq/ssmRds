@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcin.dao.UserInfoDao">
+
+    <!-- 用户基本信息输出  -->
+    <resultMap id="userInfoResult" type="com.mcin.model.user.info.UserInfoModel">
+        <result column="id" property="infoId" />
+        <result column="user_id" property="userId" />
+        <result column="phone" property="phone" />
+        <result column="user_name" property="userName" />
+        <result column="birthday" property="birthday" />
+        <result column="education" property="education" />
+        <result column="height" property="height" />
+        <result column="weight" property="weight" />
+        <result column="apartment" property="apartment" />
+        <result column="place" property="place" />
+        <result column="personal_website" property="personalWebsite" />
+        <result column="major" property="major" />
+        <result column="graduation_time" property="graduationTime" />
+        <result column="school" property="school" />
+        <result column="create_ip" property="createIp" />
+        <result column="create_time" property="createTime" />
+        <result column="email" property="email" />
+        <result column="job_position" property="jobPosition" />
+        <result column="wages" property="wages" />
+        <result column="open_source" property="openSource" />
+        <result column="open_name" property="openName" />
+    </resultMap>
+
+
+    <!-- 修改用户基本信息 -->
+    <update id="updateUserInfo" parameterType="com.mcin.model.user.info.UserInfoModel">
+        UPDATE
+            user_info
+        SET
+            phone = #{phone},
+            user_name =#{userName},
+            birthday = #{birthDay},
+            education = #{education},
+            height = #{height},
+            weight = #{weight},
+            apartment = #{apartment},
+            place = #{place},
+            personal_website = #{personalWebsite},
+            major = #{major},
+            graduation_time = #{graduationTime},
+            school = #{school}
+        WHERE
+            user_id = #{userId}
+    </update>
+
+    <!-- 查询用户基本信息 -->
+    <select id="selectUserInfo" parameterType="Integer" resultMap="userInfoResult">
+        SELECT
+            id,
+            user_id,
+            phone,
+            email,
+            job_position,
+            wages,
+            open_source,
+            open_name,
+            user_name,
+            birthday,
+            education,
+            height,
+            weight,
+            apartment,
+            place,
+            personal_website,
+            major,
+            graduation_time,
+            school
+        FROM
+            user_info
+        WHERE
+            user_id = #{userId}
+        LIMIT 1
+    </select>
+
+</mapper>

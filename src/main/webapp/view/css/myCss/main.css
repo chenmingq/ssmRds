@@ -1,0 +1,202 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+input{
+	border: none;
+}
+body{
+	overflow: hidden;
+}
+button{
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+.bg{
+	background-image: url(../../images/MyImg/bg.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	filter: brightness(.6);
+	transition: all .8s ease-in-out;
+}
+.bg:hover{
+	transform: scale3d(1.1,1.1,1.1);
+}
+.login-contain{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: auto;
+	z-index: 3;
+	width: 500px;
+	min-width: 320px;
+}
+.contain-header{
+	text-shadow: 0 0 10px black;
+	font-size: 45px;
+	font-weight: bolder;
+	text-align: center;
+	color: white;
+	margin-bottom: 30px;
+}
+
+.contain-body{
+	position: relative;
+	transform-style: preserve-3d;
+	transition: all .6s ease-in-out;
+	height: 400px;
+}
+.body-form{
+	width: 100%;
+	height: 100%;
+	padding: 0 15px 15px 15px;
+	background-color: white;
+	box-sizing: border-box;
+	border-radius: 10px;
+}
+.body-form.login,
+.body-form.register{
+	position: absolute;
+	top: 0;
+	left: 0;
+	backface-visibility:hidden;
+}
+.body-form.register{
+	transform:rotateY(180deg);
+}
+.loginBtn{
+	background-image: url(../../images/MyImg/bk.png);
+	background-repeat:no-repeat;
+	background-size: cover;
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	width: 50px;
+	height: 50px;
+}
+.body-form p{
+	margin: 20px 0;
+}
+.loginType{
+	text-align: center;
+	position: absolute;
+	z-index: 9;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	background-color: #FFFFFF;
+}
+.loginSelect{
+	width:60%;
+	height: 50px;
+	font-size: 20px;
+	font-weight: bolder;
+	margin-top: 50px;
+}
+.form-register,
+.form-login{
+	position: relative;
+	border-bottom: 1px solid #A2A2A2;
+	padding: 10px;
+	text-align: center;
+}
+.form-register span,
+.form-login span{
+	font-size: 30px;
+	padding: 5px;
+	display: inline-block;
+	margin:0 auto;
+	font-weight: bolder;
+}
+.form-register .return-btn,
+.form-login .return-btn{
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background-color: white;
+	border: none;
+	outline: none;
+	font-size: 15px;
+	cursor: pointer;
+	color: #A2A2A2;
+	border-bottom: 1px dotted #A2A2A2;
+}
+.register .form-btn{
+	margin-top: 82px;
+}
+.form-btn,.form-checkbox{
+	text-align: center;
+}
+.form-log input,
+.form-pwd input{
+	color:black;
+	box-sizing: border-box;
+	border: 1px solid #e8e8e8;
+}
+.form-log input,
+.form-pwd input,
+.form-btn input{
+	width: 100%;
+	padding: 10px 15px;
+	font-size: 16px;
+}
+.form-remeber label{
+	color: #a2a2a2;
+}
+.form-forget a{
+	color: #A2A2A2;
+}
+.form-btn button{
+	font-size: 16px;
+	background-color: dodgerblue;
+	padding: 15px 50px;
+	box-shadow:0 0 5px black;
+	cursor: pointer;
+	color: white;
+}
+
+.form-remeber,
+.form-forget{
+	width: 50%;
+	float: left;
+}
+.form-forget a{
+	float: right;
+}
+@media only screen and (max-width: 767px) {
+	.contain-header{
+		font-size: 40px;
+	}
+}
+@media only screen and (max-width: 500px){
+	.login-contain{
+		width: 320px;
+	}
+	.contain-header{
+		font-size: 40px;
+	}
+	.contain-header span{
+		display: block;
+	}
+}
+@media only screen and (max-width: 320px){
+	.contain-body{
+		width: 100%;
+	}
+	.login-contain{
+		padding: 10px;
+		box-sizing: border-box;
+	}
+	.form-btn button{
+		padding: 10px 20px;
+	}
+}

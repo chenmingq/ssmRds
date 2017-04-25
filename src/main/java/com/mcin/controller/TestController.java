@@ -2,20 +2,15 @@ package com.mcin.controller;
 
 import com.mcin.dao.TestDao;
 import com.mcin.model.ResponseModel;
-import com.mcin.util.FastJsonUtil;
-import com.mcin.util.WebUtil;
-import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -68,12 +63,12 @@ public class TestController {
         return  list;
     }
 
-    @RequestMapping("/getRedis")
+    @RequestMapping( value = "/getRedis"  , method = { RequestMethod.POST,RequestMethod.GET }, produces = "application/json")
     public @ResponseBody List<String> getRedis(){
         Jedis jedis = jedisPool.getResource();
 //		jedis.get("*");
-//		String redisValue = jedis.get("*");/*map.keySet();*/
-
+		String redisValue = jedis.get("1450291172@qq.comuserName");/*map.keySet();*/
+        System.out.println(redisValue+"----------------------");
         List<String> list  = new ArrayList<String>();
 
         Set<?> setKey = jedis.keys("*");
@@ -84,9 +79,10 @@ public class TestController {
                 list.add(string);
             }
         }
-        if (jedis != null) {
-            jedis.quit();
-        }
+//        if (jedis != null) {
+//            jedis.quit();
+//        }
+        System.out.println("----------------------------------------------- list " + list);
         return list;
     }
 
@@ -106,6 +102,7 @@ public class TestController {
 
         return map;
     }
+
 
     @RequestMapping("/redis")
     public @ResponseBody String redis(){

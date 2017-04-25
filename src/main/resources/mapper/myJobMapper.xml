@@ -3,10 +3,37 @@
 <mapper namespace="com.mcin.dao.MyJobDao">
 
 
-    <!--  注册信息  -->
-    <resultMap id="" type="" >
+    <!--  注册信息的基本信息  -->
+    <!--<resultMap id="registerInfo" type="com.mcin.model.RegisteredModel" >-->
+        <!--<result column="id" property="userInfoId" />-->
+        <!--<result column="account" property="account" />-->
+        <!--<result column="user_name" property="userName" />-->
+        <!--<result column="birthday" property="birthday" />-->
+        <!--<result column="phone" property="phone" />-->
+        <!--<result column="email" property="email" />-->
+        <!--<result column="education" property="education" />-->
+        <!--<result column="height" property="height" />-->
+        <!--<result column="weight" property="weight" />-->
+        <!--<result column="apartment" property="apartment" />-->
+        <!--<result column="place" property="place" />-->
+        <!--<result column="personal_website" property="personalWebsite" />-->
+        <!--<result column="major" property="major" />-->
+        <!--<result column="school" property="school" />-->
+        <!--<result column="graduation_time" property="graduationTime" />-->
+        <!--<result column="create_ip" property="ip" />-->
+        <!--<result column="create_time" property="createTime" />-->
+    <!--</resultMap>-->
 
+    <!-- 查询出账号和密码 -->
+    <resultMap id="loginInfo" type="com.mcin.model.MyLoginModel" >
+        <result column="id" property="loginId" />
+        <result column="email" property="email" />
+        <result column="password" property="passWord" />
+        <result column="password_count" property="passWordCount" />
+        <result column="activated_type" property="activatedType" />
+        <result column="first_login" property="firstLogin" />
     </resultMap>
+
 
     <!-- 登录信息表 -->
     <sql id="userLogin">user_login</sql>
@@ -14,56 +41,153 @@
     <!-- 个人资料基本信息表 -->
     <sql id="userInfo">user_info</sql>
 
-    <!-- 注册添加个人基本信息 -->
-    <sql id="insertInfo">
-        (user_id, user_name,  birthday, phone,  email, education, height, weight, apartment, native, personal_website,  major, graduation_time, school, create_ip, create_time)
-    </sql>
-
-    <!-- 注册添加个人基本信息数据 -->
-    <sql id="insertInfoData">
-        (#{userId}, #{userName},  #{birthday}, #{phone},  #{email}, #{education}, #{height} , #{weight}, #{apartment}, #{native}, #{personalWebsite},  #{major}, #{graduationTime}, #{school}, #{ip}, NOW())
-    </sql>
 
     <!-- 查询该账号是否被注册 -->
-    <select id="selectAccountCount" parameterType="String" resultType="Integer">
+    <select id="selectEmailExsit" parameterType="String" resultType="Integer">
         SELECT
            COUNT(1)
         FROM
            <include refid="userLogin"/>
         WHERE
-            account = #{account}
+            email = #{email}
     </select>
 
     <!-- 添加登录表数据 -->
-    <insert id="insertAccount" >
+    <insert id="insertLogin" parameterType="com.mcin.model.MyLoginModel" >
         INSERT
         INTO
             <include refid="userLogin"/>
-            (account,password,create_time)
+            (email,password,password_count,activated_type,first_login,create_ip,create_time)
         VALUES
-            (#{account},#{password},NOW())
+            (#{email},#{passWord},#{passWordCount},#{activatedType},#{firstLogin},#{ip},NOW())
     </insert>
 
-    <!-- 查询该账号的主键id -->
-    <select id="selectLoginID" resultMap="" parameterType="String">
+    <!-- 查看邮箱是否被激活 -->
+    <select id="selectAccountType" parameterType="String" resultType="Integer">
         SELECT
-           id
+           activated_type AS result
         FROM
-            <include refid="userLogin"/>
+           <include refid="userLogin"/>
         WHERE
-            account = #{account}
-            LIMIT 1
+            email = #{email}
     </select>
 
+    <!-- 激活邮箱账户 -->
+    <update id="updateAccountType" parameterType="Map">
+        UPDATE
+           <include refid="userLogin"/>
+        SET
+            activated_type = #{accountType},
+            active_code = #{activeCode},
+            active_time = NOW()
+        WHERE
+            email = #{email}
+    </update>
+
+    <!-- 修改为非首次登陆 -->
+    <update id="updateFirstLogin" parameterType="Map">
+        UPDATE
+            <include refid="userLogin"/>
+        SET
+            first_login = #{firstlogin}
+        WHERE
+            email = #{email}
+    </update>
+
+    <!-- 查询出登录的信息数据 -->
+    <select id="seleceLoginInfo" resultMap="loginInfo" parameterType="String">
+        SELECT
+	      id,email,password,password_count,activated_type,first_login,active_code
+        FROM
+           <include refid="userLogin"/>
+        WHERE
+	      email = #{email}
+
+    </select>
+
+    <!-- 累加密码错误的次数 -->
+    <update id="updateErrorPsd" parameterType="Map">
+        UPDATE
+          <include refid="userLogin"/>
+        SET
+           password_count = #{psdErrorNum}
+        WHERE
+            email = #{email}
+    </update>
+
+
+    <!-- 将登陆表的密码错误次清空 -->
+    <update id="updatePasswordCount" parameterType="Map" >
+      UPDATE
+        <include refid="userLogin"/>
+      SET
+        password_count = #{passWordCount}
+      WHERE
+        email = #{email}
+    </update>
+
+    <!-- 注册添加个人基本信息 -->
+    <!--<sql id="insertInfo">-->
+        <!--(account, user_name,  birthday, phone,  email, education, height, weight, apartment, place, personal_website,  major, graduation_time, school, create_ip, create_time)-->
+    <!--</sql>-->
+
+    <!-- 注册添加个人基本信息数据 -->
+    <!--<sql id="insertInfoData">-->
+        <!--(#{account}, #{userName},  #{birthday}, #{phone},  #{email}, #{education}, #{height} , #{weight}, #{apartment}, #{place}, #{personalWebsite},  #{major}, #{graduationTime}, #{school}, #{ip}, NOW())-->
+    <!--</sql>-->
+
+    <!-- 查询用户基本信息表的数据是否重复 -->
+    <!--<select id="selectAccountNum" resultType="Integer" parameterType="String">-->
+        <!--SELECT-->
+            <!--COUNT(1)-->
+        <!--FROM-->
+            <!--<include refid="userInfo"/>-->
+        <!--WHERE-->
+            <!--account = #{account}-->
+    <!--</select>-->
+
+    <!-- 查询该账号的主键id -->
+    <!--<select id="selectLoginID" resultType="Integer" parameterType="String">-->
+        <!--SELECT-->
+           <!--id AS userId-->
+        <!--FROM-->
+            <!--<include refid="userLogin"/>-->
+        <!--WHERE-->
+            <!--account = #{account}-->
+            <!--LIMIT 1-->
+    <!--</select>-->
+
     <!-- 注册个人信息 -->
-    <insert id="insertUserInfo">
-        INSERT
-        INTO
-            <include refid="insertInfo" />
-            <include refid="userInfo"/>
-        VALUES
-            <include refid="insertInfoData"/>
-    </insert>
+    <!--<insert id="insertUserInfo" parameterType="com.mcin.model.RegisteredModel">-->
+        <!--INSERT-->
+        <!--INTO-->
+            <!--<include refid="userInfo"/>-->
+            <!--<include refid="insertInfo" />-->
+        <!--VALUES-->
+            <!--<include refid="insertInfoData"/>-->
+    <!--</insert>-->
+
+    <!-- 查出出用户名和密码 -->
+    <!--<select id="login" parameterType="String" resultMap="loginInfo" >-->
+        <!--SELECT-->
+          <!--*-->
+        <!--FROM-->
+            <!--<include refid="userLogin"/>-->
+        <!--WHERE-->
+            <!--account = #{account}-->
+        <!--LIMIT 1-->
+    <!--</select>-->
+
+    <!-- 查询个人的基本信息 -->
+    <!--<select id="selectUserInfo" resultMap="registerInfo" parameterType="String">-->
+        <!--SELECT-->
+          <!--*-->
+        <!--FROM-->
+            <!--<include refid="userInfo"/>-->
+        <!--WHERE-->
+            <!--account = #{account}-->
+        <!--LIMIT 1-->
+    <!--</select>-->
 
 
 </mapper>

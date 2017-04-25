@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcin.dao.UserLoginDao">
+
+    <!-- 登录信息表 -->
+    <sql id="userLogin">user_login</sql>
+
+    <!-- 个人资料基本信息表 -->
+    <sql id="userInfo">user_info</sql>
+
+    <!-- 输出实体 -->
+    <resultMap id="UserLoginModelResult" type="com.mcin.model.user.info.UserLoginModel">
+        <result column="id" property="loginId"/>
+        <result column="email" property="email"/>
+        <result column="password" property="passWord"/>
+        <result column="password_count" property="errorPsdCount"/>
+        <result column="activated_type" property="activatedType"/>
+        <result column="first_login" property="firstLogin"/>
+        <result column="active_code" property="activeCode"/>
+        <result column="registration_type" property="registrationType"/>
+        <result column="create_ip" property="createIp"/>
+        <result column="create_time" property="createTime"/>
+        <result column="active_time" property="activeTime"/>
+    </resultMap>
+
+    <!-- 查询账户是否被注册 -->
+    <select id="selectUserRegist" parameterType="String" resultType="Integer" >
+        SELECT COUNT(1) FROM user_login WHERE email = #{email} LIMIT 1
+    </select>
+
+    <!-- 添加注册的信息数据 -->
+    <insert id="insertUserInfo" parameterType="com.mcin.model.user.info.UserLoginModel"  >
+        INSERT
+        INTO
+        <include refid="userLogin"/>
+        (email,password,password_count,activated_type,first_login,active_code,registration_type,create_ip,create_time)
+        VALUES
+        (#{email},#{passWord},#{errorPsdCount},#{activatedType},#{firstLogin},#{activeCode},#{registrationType},#{createIp},#{createTime})
+    </insert>
+
+    <!--  查询邮件激活状态 -->
+    <select id="selectEmailActive" resultMap="UserLoginModelResult" parameterType="String">
+      SELECT
+          id,activated_type,active_code
+      FROM
+          user_login
+      WHERE
+          email = #{email}
+      LIMIT 1
+    </select>
+
+    <!-- 激活邮箱 -->
+    <update id="emailAction" parameterType="com.mcin.model.user.info.UserLoginModel">
+        UPDATE
+            user_login
+        SET
+            activated_type = #{activatedType},
+            active_time = #{activeTime}
+        WHERE
+            id = #{loginId}
+    </update>
+
+    <!-- 查询是否添加过数据在info信息表 -->
+    <select id="selectUserId" resultType="Integer" parameterType="Integer">
+      SELECT COUNT(1) FROM user_info WHERE id = #{loginId} LIMIT 1
+    </select>
+
+    <!-- 添加用户id 到信息info表 -->
+    <insert id="insertUserInfoId" parameterType="Integer" >
+      INSERT
+      INTO
+          user_info (user_id,create_time)
+      VALUES
+          (#{loginId},NOW())
+    </insert>
+
+    <!-- 2017年4月7日17:16:48 -->
+
+    <!-- 查询企业登录的邮箱账号信息是否存在 -->
+    <select id="selectEmailUserInfo" resultType="Integer" parameterType="String">
+        <include refid="selectAccount" />
+        email = #{account}
+        LIMIT 1
+    </select>
+
+    <!-- 查询企业登录的手机号码账号信息是否存在 -->
+    <select id="selectPhoneUserInfo" resultType="Integer" parameterType="String">
+        <include refid="selectAccount" />
+        phone = #{account}
+        LIMIT 1
+    </select>
+
+    <!-- 查询当前企业和账号是否有过记录 -->
+    <select id="selectComPany" resultType="Integer" parameterType="Map">
+        SELECT
+        COUNT(1)
+        FROM
+            user_firm_login
+        WHERE
+            company = #{comPany}
+        AND
+            account = #{account}
+        AND
+            login_type = #{loginType}
+        LIMIT 1
+    </select>
+
+    <!-- 保存企业登录的信息 -->
+    <insert id="insertComPany" parameterType="Map" >
+        INSERT
+        INTO
+            user_firm_login (company,account,login_type,login_ip,login_time)
+        VALUES
+            (#{comPany},#{account},#{loginType},#{loginIp},NOW())
+    </insert>
+
+    <!-- 个人账户信息登录验证 -->
+    <select id="selectUserInfo" parameterType="com.mcin.model.user.info.UserLoginModel" resultMap="UserLoginModelResult">
+        SELECT
+            id,password_count,first_login
+        FROM
+            user_login
+        WHERE
+            email = #{email}
+        AND
+            password = #{passWord}
+        LIMIT 1
+    </select>
+
+    <!-- 修改为非首次登陆 -->
+    <update id="updateFirsLogin" parameterType="Map">
+        UPDATE
+           user_login
+            SET first_login = #{firstLogin}
+        WHERE id = #{loginId}
+    </update>
+
+    <!-- 企业登录验证查询 -->
+    <sql id="selectAccount">
+      SELECT id  AS userId FROM user_login WHERE
+    </sql>
+
+
+</mapper>

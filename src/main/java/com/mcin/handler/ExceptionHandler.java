@@ -1,9 +1,8 @@
 package com.mcin.handler;
 
+import com.mcin.exception.CustomException;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.mcin.exception.CustomException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,8 @@ public class ExceptionHandler implements HandlerExceptionResolver {
         ModelAndView mav = new ModelAndView();
         mav.addObject("code", code);
         mav.addObject("msg", msg);
-        mav.setViewName("/error");
+        mav.setViewName("error");
+
         return mav;
     }
 }

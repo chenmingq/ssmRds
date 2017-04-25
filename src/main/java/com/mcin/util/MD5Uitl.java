@@ -1,5 +1,7 @@
 package com.mcin.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.security.MessageDigest;
 import java.util.Random;
 
@@ -16,26 +18,30 @@ public class MD5Uitl {
 
 	public final static String MD5LowerCase( String src ) {
 		StringBuffer buf = new StringBuffer("");
-		try {
-			// 获取MD5摘要算法对象
-			MessageDigest digest = MessageDigest.getInstance(ALGOR);
-			// 使用指定的字节更新摘要
-			digest.update(src.getBytes(ENCODE));
-			// 获取密文
-			byte[] b = digest.digest();
-			//! 将密文转换成16进制的字符串形式
-			int i = 0;
-			for (int offset = 0; offset < b.length; offset++) {
-				i = b[offset];
-				if (i < 0) i += 256;
-				if (i < 16) buf.append("0");
-				buf.append(Integer.toHexString(i));
+		if (StringUtils.isNotBlank(src)){
+			try {
+				// 获取MD5摘要算法对象
+				MessageDigest digest = MessageDigest.getInstance(ALGOR);
+				// 使用指定的字节更新摘要
+				digest.update(src.getBytes(ENCODE));
+				// 获取密文
+				byte[] b = digest.digest();
+				//! 将密文转换成16进制的字符串形式
+				int i = 0;
+				for (int offset = 0; offset < b.length; offset++) {
+					i = b[offset];
+					if (i < 0) i += 256;
+					if (i < 16) buf.append("0");
+					buf.append(Integer.toHexString(i));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
+			return buf.toString();
+		}else {
+			return null;
 		}
-		return buf.toString();
 	}
 
 	public final static String getRandomStr(){

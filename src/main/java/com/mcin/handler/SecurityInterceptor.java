@@ -21,7 +21,8 @@ public class SecurityInterceptor implements HandlerInterceptor {
         if(sessionObj!=null) {
             return true;
         }
-        response.sendRedirect("login.json");
+        response.sendRedirect("login.jsp");
+//        response.sendRedirect("login.json");
         return false;
     }
     //拦截后处理
